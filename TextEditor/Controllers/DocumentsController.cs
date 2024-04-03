@@ -17,6 +17,15 @@ namespace TextEditor.Controllers
     {
         private readonly ApplicationDbContext _context;
 
+       /* public void OnGet() 
+        {
+            var config = new ConfigurationBuilder()
+                .AddUserSecrets<Program>()
+                .Build();
+            string tinyAPI = config["TINY_MCE_API_KEY"];
+            ViewData["tinyAPI"] = tinyAPI;
+        }*/
+
         public DocumentsController(ApplicationDbContext context)
         {
             _context = context;
@@ -25,8 +34,12 @@ namespace TextEditor.Controllers
         // GET: DocumentModels
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Docs.Include(d => d.User);
-            return View(await applicationDbContext.ToListAsync());
+            var applicationDbContext = from c in _context.Docs
+                                       select c;
+
+            applicationDbContext = applicationDbContext.Where(a => a.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            return View(await applicationDbContext.Include(d => d.User).ToListAsync());
         }
 
         // GET: DocumentModels/Create
@@ -49,7 +62,7 @@ namespace TextEditor.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", documentModel.UserId);
+
             return View(documentModel);
         }
 

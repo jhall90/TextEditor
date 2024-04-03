@@ -6,27 +6,23 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
-
-<h4>DocumentModel</h4>
-<hr />
 <div class="row">
-    <div class="col-md-4">
+    <div>
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
+            <div class="form-group col-md-5">
                 <input asp-for="Title" class="form-control" value="Untitled Document"/>
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group col-md-12">
                 
-                <textarea id="tiny" asp-for="Content"></textarea>
+                <textarea id="tiny" style="height: 80vh;" asp-for="Content"></textarea>
                 <span asp-validation-for="Content" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="hidden" asp-for="UserId" class="form-control" value="@userManager.GetUserId(User)"/>
             </div>
-            <div class="form-group">
+            <div class="form-group m-2">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
@@ -34,7 +30,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a class="btn btn-info m-2" asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {

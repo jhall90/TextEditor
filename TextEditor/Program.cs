@@ -4,6 +4,7 @@ using TextEditor.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var tinyAPI = builder.Configuration["TINY_MCE_API_KEY"];
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -37,7 +38,8 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    //Set controller=Home if you have multiple tabs at the top.  since this is a single project I am setting the controller=Documents
+    pattern: "{controller=Documents}/{action=Index}/{id?}");
 app.MapRazorPages();
 
 app.Run();
